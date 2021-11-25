@@ -90,6 +90,7 @@ _pg_init_and_start()
     # start the new cluster
     _pg_prestart
     # set username and password
+    _pg_create_database_and_user
 }
  
 # check if $PGDATA exists

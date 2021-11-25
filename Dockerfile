@@ -14,8 +14,6 @@ ENV PGPASSWOD "zheap"
 
 ENV TRIPLET "x86_64-pc-linux-gnu"
 
-COPY docker-entrypoint.sh /
-
 RUN set -ex \
         \
         && apt-get update && apt-get install -y \
@@ -94,9 +92,13 @@ RUN set -ex \
            unzip \
         && apt-get install -y libxml2 \
         && rm -rf /var/lib/apt/lists/*
- 
-RUN chmod +x /docker-entrypoint.sh
-ENV LANG en_US.utf8
+
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+
+STOPSIGNAL SIGINT
 USER postgres
 EXPOSE 5432
-ENTRYPOINT ["/docker-entrypoint.sh"]
+CMD ["postgres"]
+
